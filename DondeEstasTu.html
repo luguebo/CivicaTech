@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Dónde estás tú? — Brújula Electoral 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Nunito",sans-serif;background:#fff;color:#1A1A1A;-webkit-tap-highlight-color:transparent;}
+.app{max-width:480px;margin:0 auto;padding-bottom:60px;}
+.screen{display:none;}.screen.active{display:block;}
+
+/* TOP BAR */
+.top-bar{padding:14px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #F0F0F0;}
+.logo-img{width:34px;height:34px;border-radius:50%;object-fit:cover;}
+.brand-name{font-size:13px;font-weight:800;color:#2B8AC6;line-height:1;}
+.brand-tool{font-size:10px;color:#aaa;font-weight:600;}
+.brand-by{font-size:10px;color:#ccc;font-weight:600;margin-left:auto;}
+
+/* INTRO */
+.intro{padding:28px 20px 32px;text-align:center;}
+.compass-anim{font-size:64px;display:block;margin-bottom:16px;animation:wobble 3s ease-in-out infinite;}
+@keyframes wobble{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(15deg)}}
+.intro-eyebrow{font-size:11px;letter-spacing:0.14em;color:#2B8AC6;text-transform:uppercase;font-weight:800;margin-bottom:10px;}
+.intro-title{font-size:36px;font-weight:900;color:#1A1A1A;line-height:1.05;margin-bottom:8px;}
+.intro-title span{color:#2B8AC6;}
+.intro-bar{width:40px;height:4px;background:#27AE60;margin:0 auto 14px;border-radius:2px;}
+.intro-sub{font-size:15px;color:#555;line-height:1.65;font-weight:600;margin-bottom:6px;}
+.intro-note{font-size:12px;color:#bbb;font-weight:600;margin:14px 0 26px;}
+.start-btn{width:100%;padding:17px;border:none;border-radius:16px;background:#2B8AC6;color:#fff;font-size:17px;font-family:"Nunito",sans-serif;font-weight:900;cursor:pointer;margin-bottom:12px;letter-spacing:0.02em;}
+.start-btn:active{background:#1F6FA3;}
+.other-btn-s{width:100%;padding:14px;border:1.5px solid #E8EDF2;border-radius:14px;background:transparent;color:#666;font-size:14px;font-family:"Nunito",sans-serif;font-weight:700;cursor:pointer;}
+
+/* PREGUNTAS */
+.q-header{padding:14px 16px 0;display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.back-btn{background:none;border:1.5px solid #E8EDF2;border-radius:10px;padding:7px 13px;font-size:13px;color:#777;cursor:pointer;font-family:"Nunito",sans-serif;font-weight:700;}
+.q-step{font-size:14px;font-weight:800;color:#1A1A1A;flex:1;}
+.prog-wrap{padding:0 16px;margin-bottom:16px;}
+.prog-dots{display:flex;gap:5px;justify-content:center;}
+.prog-dot{width:8px;height:8px;border-radius:50%;background:#F0F0F0;transition:all 0.3s;}
+.prog-dot.done{background:#27AE60;}
+.prog-dot.active{background:#2B8AC6;transform:scale(1.3);}
+
+.q-card{margin:0 16px;background:#fff;border:2px solid #E8EDF2;border-radius:22px;padding:24px 20px 20px;position:relative;overflow:hidden;transition:border-color 0.2s;}
+.q-emoji{font-size:38px;display:block;margin-bottom:10px;}
+.q-cat{font-size:10px;color:#2B8AC6;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;}
+.q-text{font-size:19px;font-weight:800;color:#1A1A1A;line-height:1.4;margin-bottom:20px;}
+
+.options{display:flex;flex-direction:column;gap:10px;}
+.opt{width:100%;padding:15px 18px;border:2px solid #E8EDF2;border-radius:14px;background:#FAFBFC;color:#1A1A1A;font-size:15px;font-family:"Nunito",sans-serif;font-weight:700;text-align:left;cursor:pointer;transition:all 0.15s;line-height:1.4;}
+.opt:active{transform:scale(0.98);}
+.opt.sel{border-color:#2B8AC6;background:#EAF4FB;color:#1A6FA0;}
+.opt.sel::before{content:"✓ ";font-weight:900;}
+
+.next-btn{display:none;width:calc(100% - 32px);margin:16px 16px 0;padding:16px;border:none;border-radius:14px;background:#2B8AC6;color:#fff;font-size:16px;font-family:"Nunito",sans-serif;font-weight:900;cursor:pointer;}
+.next-btn.show{display:block;}
+
+/* RESULTADO */
+.result{padding:20px 20px 36px;}
+.res-top{text-align:center;margin-bottom:20px;}
+.res-eyebrow{font-size:11px;letter-spacing:0.14em;color:#2B8AC6;text-transform:uppercase;font-weight:800;margin-bottom:6px;}
+.res-title{font-size:26px;font-weight:900;color:#1A1A1A;line-height:1.2;margin-bottom:4px;}
+.res-bar{width:40px;height:4px;background:#27AE60;margin:0 auto 14px;border-radius:2px;}
+
+/* BRUJULA UNA PUNTA */
+.compass-container{width:260px;height:260px;margin:0 auto 24px;position:relative;}
+.compass-container svg{width:100%;height:100%;}
+
+/* CUADRANTES */
+.quads{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;}
+.quad{padding:13px 14px;border-radius:14px;border:2px solid transparent;transition:all 0.3s;}
+.quad.active{border-color:#2B8AC6;box-shadow:0 4px 16px rgba(43,138,198,0.15);}
+.quad-icon{font-size:20px;margin-bottom:4px;}
+.quad-name{font-size:13px;font-weight:800;color:#1A1A1A;margin-bottom:2px;}
+.quad-desc{font-size:11px;color:#888;font-weight:600;line-height:1.4;}
+.q0{background:#EAF4FB;}
+.q1{background:#E9F7EF;}
+.q2{background:#FEF9E7;}
+.q3{background:#FDEDEC;}
+
+/* AFINIDAD */
+.afinidad{margin-bottom:16px;}
+.afin-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#aaa;font-weight:800;margin-bottom:12px;}
+.afin-row{margin-bottom:10px;}
+.afin-top{display:flex;justify-content:space-between;font-size:14px;font-weight:800;margin-bottom:5px;align-items:center;}
+.afin-track{height:12px;background:#F0F0F0;border-radius:6px;overflow:hidden;}
+.afin-fill-e{height:100%;background:linear-gradient(90deg,#F39C12,#E67E22);border-radius:6px;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.afin-fill-c{height:100%;background:linear-gradient(90deg,#2B8AC6,#1A7AC0);border-radius:6px;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+
+/* NOTA ESPECIAL */
+.nota-pais{background:linear-gradient(135deg,#EAF4FB,#E9F7EF);border-radius:14px;padding:16px 18px;margin-bottom:14px;border:1.5px solid #D6EAF8;}
+.nota-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;font-weight:800;color:#27AE60;margin-bottom:6px;}
+.nota-text{font-size:14px;color:#333;line-height:1.65;font-weight:600;}
+
+/* REFLEXION */
+.reflection{background:#F8FBFF;border-left:4px solid #2B8AC6;border-radius:12px;padding:15px 17px;margin-bottom:16px;}
+.ref-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#2B8AC6;font-weight:800;margin-bottom:5px;}
+.ref-text{font-size:14px;color:#444;line-height:1.65;font-weight:600;font-style:italic;}
+
+.share-btn{width:100%;padding:16px;border:none;border-radius:14px;background:#27AE60;color:#fff;font-size:16px;font-family:"Nunito",sans-serif;font-weight:900;cursor:pointer;margin-bottom:10px;}
+.restart-btn-r{width:100%;padding:14px;border:2px solid #E8EDF2;border-radius:14px;background:transparent;color:#666;font-size:14px;font-family:"Nunito",sans-serif;font-weight:700;cursor:pointer;margin-bottom:10px;}
+.other-btn-r{width:100%;padding:14px;border:2px solid #2B8AC6;border-radius:14px;background:transparent;color:#2B8AC6;font-size:14px;font-family:"Nunito",sans-serif;font-weight:800;cursor:pointer;}
+.footer{text-align:center;padding:22px 0 0;font-size:12px;color:#ccc;font-weight:700;}
+.footer strong{color:#2B8AC6;}
+.eye-c{position:fixed;bottom:14px;right:14px;background:rgba(255,255,255,0.95);border:1px solid #E8EDF2;border-radius:20px;padding:5px 12px;font-size:12px;color:#aaa;font-weight:700;display:flex;align-items:center;gap:5px;z-index:999;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.eye-c span{color:#2B8AC6;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- INTRO -->
+<div class="screen active" id="s-intro">
+  <div class="top-bar">
+    <img class="logo-img" src="https://luguebo.github.io/CivicaTech/CivicaTechLogo.PNG" alt="CivicaTech">
+    <div>
+      <div class="brand-name">🧭 Brújula Electoral</div>
+      <div class="brand-tool">¿Dónde estás tú?</div>
+    </div>
+    <div class="brand-by">CivicaTech · LuchoGb</div>
+  </div>
+  <div class="intro">
+    <span class="compass-anim">🧭</span>
+    <div class="intro-eyebrow">Colombia · Segunda vuelta 2026</div>
+    <div class="intro-title">¿Dónde<br><span>estás tú?</span></div>
+    <div class="intro-bar"></div>
+    <div class="intro-sub">10 preguntas sobre tu vida real.<br>Te mostramos dónde está tu brújula<br>— sin decirte por quién votar.</div>
+    <div class="intro-note">🔒 Anónimo. No guardamos nada.</div>
+    <button class="start-btn" onclick="startQ()">Encontrar mi lugar 🧭</button>
+    <button class="other-btn-s" onclick="location.href='SimulaImpacto.html'">🎯 ¿Cómo te afecta cada programa?</button>
+  </div>
+</div>
+
+<!-- PREGUNTAS -->
+<div class="screen" id="s-q">
+  <div class="q-header">
+    <button class="back-btn" onclick="prevQ()">← Atrás</button>
+    <span class="q-step" id="q-step">1 de 10</span>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-dots" id="prog-dots"></div>
+  </div>
+  <div class="q-card" id="q-card">
+    <span class="q-emoji" id="q-emoji"></span>
+    <div class="q-cat" id="q-cat"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options"></div>
+  </div>
+  <button class="next-btn" id="next-btn" onclick="nextQ()">Siguiente →</button>
+</div>
+
+<!-- RESULTADO -->
+<div class="screen" id="s-result">
+  <div class="result">
+    <div class="res-top">
+      <div class="res-eyebrow">Tu brújula política</div>
+      <div class="res-title" id="res-title">Cargando...</div>
+      <div class="res-bar"></div>
+    </div>
+
+    <div class="compass-container">
+      <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="cbg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F5F9FF"/>
+            <stop offset="100%" stop-color="#fff"/>
+          </radialGradient>
+          <filter id="shadow">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#2B8AC6" flood-opacity="0.3"/>
+          </filter>
+        </defs>
+        <!-- Fondo -->
+        <circle cx="130" cy="130" r="118" fill="url(#cbg)" stroke="#E8EDF2" stroke-width="2"/>
+        <!-- Cuadrantes -->
+        <path d="M130,130 L130,18 A112,112 0 0,1 242,130 Z" fill="#EAF4FB" opacity="0.6"/>
+        <path d="M130,130 L242,130 A112,112 0 0,1 130,242 Z" fill="#FEF9E7" opacity="0.5"/>
+        <path d="M130,130 L130,242 A112,112 0 0,1 18,130 Z" fill="#FDEDEC" opacity="0.4"/>
+        <path d="M130,130 L18,130 A112,112 0 0,1 130,18 Z" fill="#E9F7EF" opacity="0.5"/>
+        <!-- Ejes -->
+        <line x1="130" y1="14" x2="130" y2="246" stroke="#D0D8E4" stroke-width="1.5"/>
+        <line x1="14" y1="130" x2="246" y2="130" stroke="#D0D8E4" stroke-width="1.5"/>
+        <!-- Círculos guía -->
+        <circle cx="130" cy="130" r="56" fill="none" stroke="#E8EDF2" stroke-width="1" stroke-dasharray="3,5"/>
+        <circle cx="130" cy="130" r="90" fill="none" stroke="#E8EDF2" stroke-width="1" stroke-dasharray="3,5"/>
+        <!-- Labels ejes -->
+        <text x="130" y="10" text-anchor="middle" font-family="Nunito" font-size="12" font-weight="900" fill="#27AE60">CAMBIO</text>
+        <text x="130" y="257" text-anchor="middle" font-family="Nunito" font-size="12" font-weight="900" fill="#E74C3C">ORDEN</text>
+        <text x="9" y="134" text-anchor="middle" font-family="Nunito" font-size="10" font-weight="800" fill="#aaa">YO</text>
+        <text x="251" y="134" text-anchor="middle" font-family="Nunito" font-size="10" font-weight="800" fill="#2B8AC6">TODOS</text>
+        <!-- Labels cuadrantes -->
+        <text x="186" y="72" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="700" fill="#2B8AC6" opacity="0.8">Cambio</text>
+        <text x="186" y="83" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="700" fill="#2B8AC6" opacity="0.8">colectivo</text>
+        <text x="74" y="72" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="700" fill="#27AE60" opacity="0.8">Cambio</text>
+        <text x="74" y="83" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="700" fill="#27AE60" opacity="0.8">personal</text>
+        <text x="186" y="192" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="700" fill="#F39C12" opacity="0.8">Orden</text>
+        <text x="186" y="203" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="700" fill="#F39C12" opacity="0.8">colectivo</text>
+        <text x="74" y="192" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="700" fill="#E74C3C" opacity="0.8">Orden</text>
+        <text x="74" y="203" text-anchor="middle" font-family="Nunito" font-size="9" font-weight="700" fill="#E74C3C" opacity="0.8">personal</text>
+        <!-- AGUJA — una sola punta hacia arriba -->
+        <g id="needle" transform="rotate(0,130,130)" filter="url(#shadow)">
+          <!-- cuerpo de la aguja -->
+          <polygon points="130,32 124,130 136,130" fill="#2B8AC6" rx="2"/>
+          <!-- cola redondeada -->
+          <ellipse cx="130" cy="136" rx="8" ry="12" fill="#D0D8E4"/>
+        </g>
+        <!-- Centro -->
+        <circle cx="130" cy="130" r="12" fill="white" stroke="#2B8AC6" stroke-width="2.5"/>
+        <circle cx="130" cy="130" r="5" fill="#2B8AC6"/>
+        <!-- Punto usuario (aparece después) -->
+        <circle cx="130" cy="130" r="8" fill="#27AE60" id="user-dot" opacity="0" stroke="white" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <div class="quads">
+      <div class="quad q0" id="qu0"><div class="quad-icon">🔵</div><div class="quad-name">Cambio colectivo</div><div class="quad-desc">Transformar juntos con Estado que garantiza derechos para todos</div></div>
+      <div class="quad q1" id="qu1"><div class="quad-icon">🟢</div><div class="quad-name">Cambio personal</div><div class="quad-desc">Transformar desde la libertad individual y el esfuerzo propio</div></div>
+      <div class="quad q2" id="qu2"><div class="quad-icon">🟡</div><div class="quad-name">Orden colectivo</div><div class="quad-desc">Estabilidad con reglas claras y responsabilidad compartida</div></div>
+      <div class="quad q3" id="qu3"><div class="quad-icon">🔴</div><div class="quad-name">Orden personal</div><div class="quad-desc">Seguridad y autoridad donde cada quien responde por lo suyo</div></div>
+    </div>
+
+    <div class="afinidad">
+      <div class="afin-label">Afinidad con cada programa</div>
+      <div class="afin-row">
+        <div class="afin-top"><span>🟡 De la Espriella · Defensores de la Patria</span><span id="pct-e">0%</span></div>
+        <div class="afin-track"><div class="afin-fill-e" id="bar-e" style="width:0%"></div></div>
+      </div>
+      <div class="afin-row">
+        <div class="afin-top"><span>🔵 Cepeda · Pacto Histórico</span><span id="pct-c">0%</span></div>
+        <div class="afin-track"><div class="afin-fill-c" id="bar-c" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="nota-pais" id="nota-pais" style="display:none;">
+      <div class="nota-label">💡 Dato que vale la pena saber</div>
+      <div class="nota-text" id="nota-text"></div>
+    </div>
+
+    <div class="reflection">
+      <div class="ref-label">Tu brújula dice</div>
+      <div class="ref-text" id="ref-text"></div>
+    </div>
+
+    <button class="share-btn" onclick="shareRes()">Compartir mi brújula 🧭</button>
+    <button class="restart-btn-r" onclick="restart()">Volver a empezar</button>
+    <button class="other-btn-r" onclick="location.href='SimulaImpacto.html'">🎯 Simula tu impacto →</button>
+    <div class="footer" style="margin-top:20px;"><strong>🧭 Brújula Electoral</strong> · CivicaTech · by LuchoGb</div>
+  </div>
+</div>
+
+</div>
+
+
+<script>
+const QS=[
+  {
+    emoji:"💧",cat:"Agua y naturaleza",
+    t:"El agua de tu ciudad viene de páramos y ríos. ¿Quién debería cuidarlos?",
+    o:[
+      {txt:"Todos — el agua es de todos y entre todos la cuidamos",s:[0.9,0.7]},
+      {txt:"Cada quien cuida lo que tiene cerca",s:[-0.3,0.1]},
+      {txt:"Las empresas privadas que la distribuyen",s:[-0.7,-0.2]},
+      {txt:"No sé exactamente quién debería",s:[0,0]}
+    ]
+  },
+  {
+    emoji:"🌳",cat:"Medio ambiente",
+    t:"¿Cambiarías algo de tu vida cotidiana si eso ayuda al planeta?",
+    o:[
+      {txt:"Sí — el planeta es de todos y todos tenemos que poner de nuestra parte",s:[0.8,0.8]},
+      {txt:"Algo sí, pero sin que afecte mucho mi vida",s:[0.2,0.3]},
+      {txt:"Eso es problema de los gobiernos y las empresas, no mío",s:[-0.5,-0.3]},
+      {txt:"No lo he pensado mucho",s:[0,0]}
+    ]
+  },
+  {
+    emoji:"📚",cat:"Educación",
+    t:"¿La universidad debería ser gratuita para quien quiera estudiar?",
+    o:[
+      {txt:"Sí — la educación es un derecho, no un privilegio de quien tiene plata",s:[0.9,0.8]},
+      {txt:"Gratuita para quienes no pueden pagar, los demás que paguen",s:[0.4,0.4]},
+      {txt:"No — quien quiere estudiar que trabaje para pagarlo",s:[-0.7,-0.3]},
+      {txt:"No tengo posición clara",s:[0,0]}
+    ]
+  },
+  {
+    emoji:"👩",cat:"Libertades",
+    t:"¿Quién debería decidir sobre tu cuerpo y tu vida personal?",
+    o:[
+      {txt:"Yo — nadie más tiene derecho a meterse en mis decisiones personales",s:[0.2,0.9]},
+      {txt:"Yo, pero con responsabilidad hacia mi familia y comunidad",s:[0.5,0.5]},
+      {txt:"La familia y los valores que nos enseñaron",s:[-0.1,-0.3]},
+      {txt:"No tengo una posición definida",s:[0,0]}
+    ]
+  },
+  {
+    emoji:"👥",cat:"Comunidad",
+    t:"Cuando hay un problema en tu barrio, ¿qué funciona mejor?",
+    o:[
+      {txt:"Que todos nos unamos — juntos lo resolvemos más fácil",s:[0.9,0.6]},
+      {txt:"Que cada quien resuelva lo suyo y el barrio avanza solo",s:[-0.7,0.1]},
+      {txt:"Que llegue el Estado o alguien con autoridad a resolverlo",s:[0.1,-0.3]},
+      {txt:"Depende del problema",s:[0.1,0.1]}
+    ]
+  },
+  {
+    emoji:"💸",cat:"Riqueza y distribución",
+    t:"Si los ricos tienen más plata, ¿eso le llega a los demás?",
+    o:[
+      {txt:"No — los que tienen capital lo retienen. Eso se llama teoría del derrame y nunca ha funcionado",s:[0.8,0.6]},
+      {txt:"Algo llega — más inversión genera empleos",s:[-0.2,0.1]},
+      {txt:"Sí — si les va bien a ellos, nos va bien a todos",s:[-0.8,-0.2]},
+      {txt:"No sé bien cómo funciona eso",s:[0,0]}
+    ]
+  },
+  {
+    emoji:"🌅",cat:"Oportunidades",
+    t:"Una persona que nació pobre y no logró salir adelante, ¿por qué fue?",
+    o:[
+      {txt:"Porque el sistema no le dio las mismas oportunidades desde el principio",s:[0.9,0.7]},
+      {txt:"Una mezcla — el sistema falla pero el esfuerzo propio también importa",s:[0.2,0.2]},
+      {txt:"Porque no se esforzó lo suficiente — quien quiere puede",s:[-0.8,-0.1]},
+      {txt:"No puedo generalizar — depende de cada caso",s:[0.1,0.1]}
+    ]
+  },
+  {
+    emoji:"🌍",cat:"Futuro",
+    t:"¿Qué Colombia quieres dejarle a quien venga después de ti?",
+    o:[
+      {txt:"Un país donde nadie pase hambre, con agua limpia y bosques vivos",s:[0.8,0.9]},
+      {txt:"Un país seguro donde cada quien pueda progresar por su cuenta",s:[-0.3,-0.1]},
+      {txt:"Un país con más empresas y trabajo para todos",s:[-0.1,0.2]},
+      {txt:"No lo he pensado así",s:[0,0]}
+    ]
+  },
+  {
+    emoji:"🤝",cat:"Solidaridad",
+    t:"¿Pagarías un poco más de impuestos si eso garantiza salud gratis para todos?",
+    o:[
+      {txt:"Sí — si todos estamos bien, yo estoy mejor también",s:[0.9,0.5]},
+      {txt:"Depende de si confío en que la plata llegue bien",s:[0.3,0.1]},
+      {txt:"No — cada quien que resuelva su salud como pueda",s:[-0.8,-0.3]},
+      {txt:"No sé si podría pagar más",s:[0.1,0]}
+    ]
+  },
+  {
+    emoji:"🧭",cat:"¿Quién eres?",
+    t:"¿Con cuál de estas frases te identificas más?",
+    o:[
+      {txt:"Me va bien cuando a todos nos va bien",s:[0.9,0.6]},
+      {txt:"Respeto a todos pero primero mi familia y yo",s:[-0.1,0.1]},
+      {txt:"Prefiero libertad a que me protejan",s:[-0.5,0.4]},
+      {txt:"Quiero cambio pero con orden y sin caos",s:[0.1,-0.2]}
+    ]
+  }
+];
+
+const QUAD_NAMES=["Cambio colectivo","Cambio personal","Orden colectivo","Orden personal"];
+const QUAD_REFS=[
+  "Crees que las cosas mejoran cuando todos jalamos para el mismo lado. Que el agua, la educación y la salud son derechos — no negocios. Esa visión la comparten la mayoría de los colombianos que nunca han tenido acceso a lo básico.",
+  "Quieres cambio, pero desde tu propia libertad. Crees en el esfuerzo personal y en que cada quien puede transformar su vida. El reto que vale la pena preguntarse: ¿cómo llega ese cambio a quien nació sin las mismas condiciones de partida?",
+  "Valoras el orden, pero con responsabilidad hacia los demás. Crees que las reglas deben proteger a todos, no solo a los que más tienen. Es una posición de equilibrio que busca estabilidad con justicia.",
+  "Valoras la autoridad y la libertad individual. Crees que cada quien debe responder por lo suyo. Vale preguntarse: ¿qué pasa con quien llegó al mundo sin las mismas herramientas que tú?"
+];
+const NOTAS=[
+  // Para cambio colectivo — refuerzo
+  null,
+  // Para cambio personal — dato suave
+  "Los países más desarrollados socialmente del mundo — Finlandia, Noruega, Dinamarca, Costa Rica — llegaron ahí invirtiendo juntos en educación, salud y agua para todos. No fue cada quien por su lado: fue un proyecto colectivo que le abrió el camino al emprendimiento individual.",
+  // Para orden colectivo — dato suave
+  "Los países con mayor bienestar y mayor libertad individual son también los que más invierten en servicios públicos para todos. La seguridad real no viene solo de la autoridad — viene de que nadie tenga tanta necesidad que se vea obligado a delinquir.",
+  // Para orden personal — dato más directo
+  "Los países con mayor movilidad social — donde el hijo del pobre tiene real posibilidad de progresar — son aquellos que invirtieron en educación pública universal y salud gratuita. La libertad individual florece sobre una base colectiva, no a pesar de ella."
+];
+
+let cur=0,ans=[],sel=null;
+const TOT=QS.length;
+
+function ss(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo(0,0);}
+function startQ(){cur=0;ans=[];sel=null;ss("s-q");buildDots();renderQ();}
+function restart(){startQ();}
+
+function buildDots(){
+  const c=document.getElementById("prog-dots");c.innerHTML="";
+  for(let i=0;i<TOT;i++){const d=document.createElement("div");d.className="prog-dot"+(i===0?" active":"");d.id="dot-"+i;c.appendChild(d);}
+}
+
+function updateDots(){
+  for(let i=0;i<TOT;i++){
+    const d=document.getElementById("dot-"+i);
+    if(!d)continue;
+    d.className="prog-dot"+(i<cur?"done":i===cur?" active":"");
+  }
+}
+
+function renderQ(){
+  updateDots();
+  const q=QS[cur];
+  document.getElementById("q-step").textContent=(cur+1)+" de "+TOT;
+  document.getElementById("q-emoji").textContent=q.emoji;
+  document.getElementById("q-cat").textContent=q.cat;
+  document.getElementById("q-text").textContent=q.t;
+  const opts=document.getElementById("options");opts.innerHTML="";
+  q.o.forEach((o,i)=>{
+    const b=document.createElement("button");b.className="opt";
+    b.textContent=o.txt;
+    if(ans[cur]===i)b.classList.add("sel");
+    b.onclick=()=>pick(b,i);opts.appendChild(b);
+  });
+  sel=ans[cur]!==undefined?ans[cur]:null;
+  const nb=document.getElementById("next-btn");
+  nb.className=sel!==null?"next-btn show":"next-btn";
+  nb.textContent=cur===TOT-1?"Ver mi brújula 🧭":"Siguiente →";
+}
+
+function pick(btn,idx){
+  document.querySelectorAll(".opt").forEach(b=>b.classList.remove("sel"));
+  btn.classList.add("sel");sel=idx;ans[cur]=idx;
+  const nb=document.getElementById("next-btn");
+  nb.className="next-btn show";
+  nb.textContent=cur===TOT-1?"Ver mi brújula 🧭":"Siguiente →";
+}
+
+function nextQ(){
+  if(sel===null)return;
+  if(cur<TOT-1){cur++;sel=ans[cur]!==undefined?ans[cur]:null;renderQ();}
+  else showResult();
+}
+
+function prevQ(){
+  if(cur>0){cur--;sel=ans[cur]!==undefined?ans[cur]:null;renderQ();}
+  else ss("s-intro");
+}
+
+function calcScores(){
+  let col=0,cam=0,n=0;
+  ans.forEach((idx,qi)=>{
+    if(idx!==undefined&&QS[qi]){
+      const s=QS[qi].o[idx].s;
+      col+=s[0];cam+=s[1];n++;
+    }
+  });
+  if(n>0){col=col/n;cam=cam/n;}
+  return{col:Math.max(-1,Math.min(1,col)),cam:Math.max(-1,Math.min(1,cam))};
+}
+
+function getQuad(col,cam){
+  if(cam>=0&&col>=0)return 0;
+  if(cam>=0&&col<0)return 1;
+  if(cam<0&&col>=0)return 2;
+  return 3;
+}
+
+function calcAfinidad(col,cam){
+  const c=((col+1)/2)*0.6+((cam+1)/2)*0.4;
+  const e=((1-col)/2)*0.6+((1-cam)/2)*0.4;
+  const t=c+e;
+  return{c:Math.round((c/t)*100),e:Math.round((e/t)*100)};
+}
+
+function animNeedle(angle){
+  const n=document.getElementById("needle");
+  let cur2=0,step=angle/50,i=0;
+  const iv=setInterval(()=>{
+    cur2+=step;i++;
+    n.setAttribute("transform","rotate("+cur2+",130,130)");
+    if(i>=50){n.setAttribute("transform","rotate("+angle+",130,130)");clearInterval(iv);}
+  },16);
+}
+
+function animDot(col,cam){
+  const d=document.getElementById("user-dot");
+  const x=130+col*90,y=130-cam*90;
+  d.setAttribute("cx",x);d.setAttribute("cy",y);
+  setTimeout(()=>{d.setAttribute("opacity","1");},800);
+}
+
+function animBars(pe,pc){
+  setTimeout(()=>{
+    document.getElementById("bar-e").style.width=pe+"%";
+    document.getElementById("bar-c").style.width=pc+"%";
+    document.getElementById("pct-e").textContent=pe+"%";
+    document.getElementById("pct-c").textContent=pc+"%";
+  },500);
+}
+
+function showResult(){
+  const{col,cam}=calcScores();
+  const q=getQuad(col,cam);
+  const af=calcAfinidad(col,cam);
+
+  // Cuadrantes
+  for(let i=0;i<4;i++){
+    document.getElementById("qu"+i).classList.toggle("active",i===q);
+  }
+
+  document.getElementById("res-title").textContent=QUAD_NAMES[q];
+  document.getElementById("ref-text").textContent=QUAD_REFS[q];
+
+  // Nota especial (solo si no es cambio colectivo)
+  const nota=NOTAS[q];
+  const notaEl=document.getElementById("nota-pais");
+  if(nota){
+    document.getElementById("nota-text").textContent=nota;
+    notaEl.style.display="block";
+  } else {
+    notaEl.style.display="none";
+  }
+
+  ss("s-result");
+
+  // Brújula — ángulo: norte = cambio colectivo
+  // col: -1 (izq/individuo) a +1 (der/colectivo)
+  // cam: -1 (abajo/orden) a +1 (arriba/cambio)
+  // La aguja apunta al norte cuando cam=+1, col=+1 → ángulo 45°
+  // Convertimos coordenadas a ángulo de rotación de la aguja
+  const angle=Math.atan2(col,cam)*(180/Math.PI);
+  setTimeout(()=>animNeedle(angle),300);
+  setTimeout(()=>animDot(col,cam),600);
+  animBars(af.e,af.c);
+}
+
+function shareRes(){
+  const{col,cam}=calcScores();
+  const q=getQuad(col,cam);
+  const af=calcAfinidad(col,cam);
+  const txt="Mi brújula política apunta a \""+QUAD_NAMES[q]+"\" (Brújula Electoral · CivicaTech). Afinidad: Cepeda "+af.c+"% · De la Espriella "+af.e+"%. ¿Y la tuya? 👉 https://luguebo.github.io/CivicaTech/DondeEstasTu.html";
+  if(navigator.share)navigator.share({title:"Brújula Electoral",text:txt});
+  else navigator.clipboard.writeText(txt).then(()=>alert("¡Copiado para compartir!"));
+}
+
+
+</script>
+</body>
+</html>

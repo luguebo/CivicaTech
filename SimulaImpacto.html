@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simula tu impacto — Brújula Electoral 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Nunito",sans-serif;background:#fff;color:#1A1A1A;}
+.app{max-width:480px;margin:0 auto;padding-bottom:60px;}
+.screen{display:none;}.screen.active{display:block;}
+
+/* HEADER */
+.top-bar{padding:16px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #F0F0F0;}
+.logo-img{width:36px;height:36px;border-radius:50%;object-fit:cover;}
+.brand-wrap{flex:1;}
+.brand-name{font-size:13px;font-weight:800;color:#2B8AC6;line-height:1;}
+.brand-tool{font-size:11px;color:#aaa;font-weight:600;}
+.brand-by{font-size:10px;color:#ccc;font-weight:600;}
+
+/* INTRO */
+.intro{padding:28px 20px 32px;}
+.intro-hero{text-align:center;margin-bottom:28px;}
+.compass-icon{font-size:52px;margin-bottom:12px;}
+.intro-eyebrow{font-size:11px;letter-spacing:0.14em;color:#2B8AC6;text-transform:uppercase;font-weight:700;margin-bottom:8px;}
+.intro-title{font-size:34px;font-weight:800;color:#1A1A1A;line-height:1.1;margin-bottom:8px;}
+.intro-title span{color:#2B8AC6;}
+.intro-bar{width:36px;height:4px;background:#27AE60;margin:0 auto 14px;border-radius:2px;}
+.intro-sub{font-size:15px;color:#555;line-height:1.6;font-weight:600;}
+.intro-note{font-size:12px;color:#aaa;font-weight:600;margin:16px 0 24px;text-align:center;}
+.start-btn{width:100%;padding:16px;border:none;border-radius:14px;background:#2B8AC6;color:#fff;font-size:16px;font-family:"Nunito",sans-serif;font-weight:800;cursor:pointer;margin-bottom:12px;}
+.start-btn:hover{background:#1F6FA3;}
+.other-tool{width:100%;padding:14px;border:1.5px solid #E8EDF2;border-radius:14px;background:transparent;color:#555;font-size:14px;font-family:"Nunito",sans-serif;font-weight:700;cursor:pointer;}
+.other-tool:hover{border-color:#2B8AC6;color:#2B8AC6;}
+
+/* PREGUNTAS */
+.q-header{padding:14px 16px 0;display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.back-btn{background:none;border:1.5px solid #E8EDF2;border-radius:10px;padding:6px 12px;font-size:13px;color:#777;cursor:pointer;font-family:"Nunito",sans-serif;font-weight:700;}
+.back-btn:hover{border-color:#2B8AC6;color:#2B8AC6;}
+.q-step{font-size:14px;font-weight:800;color:#1A1A1A;flex:1;}
+.prog-wrap{padding:0 16px;margin-bottom:18px;}
+.prog-row{display:flex;justify-content:space-between;font-size:12px;color:#aaa;margin-bottom:6px;font-weight:700;}
+.prog-track{height:5px;background:#F0F0F0;border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;background:#2B8AC6;border-radius:3px;transition:width 0.4s;}
+.q-card{margin:0 16px;background:#fff;border:1.5px solid #E8EDF2;border-radius:18px;padding:22px 18px 18px;position:relative;overflow:hidden;}
+.q-bar{position:absolute;top:0;left:0;right:0;height:5px;background:#2B8AC6;}
+.q-num{font-size:11px;color:#bbb;margin-bottom:8px;font-weight:700;}
+.q-text{font-size:18px;font-weight:800;color:#1A1A1A;line-height:1.45;margin-bottom:6px;}
+.q-note{font-size:12px;color:#aaa;font-weight:600;margin-bottom:16px;font-style:italic;}
+.options{display:flex;flex-direction:column;gap:9px;margin-top:14px;}
+.opt{width:100%;padding:13px 16px;border:1.5px solid #E8EDF2;border-radius:12px;background:#FAFBFC;color:#1A1A1A;font-size:14px;font-family:"Nunito",sans-serif;font-weight:700;text-align:left;cursor:pointer;transition:all 0.15s;line-height:1.4;}
+.opt:hover{border-color:#2B8AC6;background:#EAF4FB;}
+.opt.sel{border-color:#2B8AC6;background:#EAF4FB;color:#1A6FA0;}
+.next-btn{display:none;width:calc(100% - 32px);margin:14px 16px 0;padding:15px;border:none;border-radius:12px;background:#2B8AC6;color:#fff;font-size:15px;font-family:"Nunito",sans-serif;font-weight:800;cursor:pointer;}
+.next-btn.show{display:block;}
+.next-btn:hover{background:#1F6FA3;}
+
+/* RESULTADO */
+.result{padding:22px 20px 32px;}
+.res-eyebrow{font-size:11px;letter-spacing:0.14em;color:#2B8AC6;text-transform:uppercase;font-weight:700;margin-bottom:6px;text-align:center;}
+.res-title{font-size:24px;font-weight:800;color:#1A1A1A;line-height:1.2;margin-bottom:6px;text-align:center;}
+.res-bar{width:36px;height:4px;background:#27AE60;margin:0 auto 14px;border-radius:2px;}
+.res-sub{font-size:13px;color:#666;font-weight:600;line-height:1.6;text-align:center;margin-bottom:22px;}
+
+/* BRUJULA RESULTADO */
+.compass-result{margin:0 auto 22px;width:220px;height:220px;position:relative;}
+.compass-result svg{width:100%;height:100%;}
+
+/* BLOQUE CANDIDATO */
+.cand-block{margin-bottom:14px;border-radius:16px;overflow:hidden;border:1.5px solid #E8EDF2;}
+.cand-head{padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.cand-head-e{background:#FEF9E7;}
+.cand-head-c{background:#EAF4FB;}
+.cand-emoji{font-size:20px;}
+.cand-name{font-size:15px;font-weight:800;color:#1A1A1A;}
+.cand-tag{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;margin-left:auto;}
+.tag-e{background:#F39C12;color:#fff;}
+.tag-c{background:#2B8AC6;color:#fff;}
+.impact-list{padding:12px 16px;display:flex;flex-direction:column;gap:9px;}
+.impact-item{display:flex;gap:10px;align-items:flex-start;}
+.imp-icon{font-size:15px;flex-shrink:0;margin-top:2px;}
+.imp-text{font-size:13px;color:#333;font-weight:600;line-height:1.55;}
+.imp-text strong{color:#1A1A1A;font-weight:800;}
+
+.reflection{background:#F8FBFF;border:1px solid #D6EAF8;border-left:4px solid #2B8AC6;border-radius:12px;padding:14px 16px;margin-bottom:16px;}
+.ref-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#2B8AC6;font-weight:800;margin-bottom:5px;}
+.ref-text{font-size:13px;color:#444;line-height:1.65;font-weight:600;font-style:italic;}
+
+.share-btn{width:100%;padding:15px;border:none;border-radius:12px;background:#27AE60;color:#fff;font-size:15px;font-family:"Nunito",sans-serif;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.share-btn:hover{background:#1E8449;}
+.restart-btn{width:100%;padding:14px;border:1.5px solid #E8EDF2;border-radius:12px;background:transparent;color:#666;font-size:14px;font-family:"Nunito",sans-serif;font-weight:700;cursor:pointer;margin-bottom:10px;}
+.other-btn{width:100%;padding:14px;border:1.5px solid #2B8AC6;border-radius:12px;background:transparent;color:#2B8AC6;font-size:14px;font-family:"Nunito",sans-serif;font-weight:800;cursor:pointer;}
+
+.footer{text-align:center;padding:20px 0 0;font-size:12px;color:#ccc;font-weight:700;}
+.footer strong{color:#2B8AC6;}
+.eye-c{position:fixed;bottom:14px;right:14px;background:rgba(255,255,255,0.92);border:1px solid #E8EDF2;border-radius:20px;padding:5px 11px;font-size:12px;color:#888;font-weight:700;display:flex;align-items:center;gap:5px;z-index:999;}
+.eye-c span{color:#2B8AC6;font-weight:800;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="screen active" id="s-intro">
+  <div class="top-bar">
+    <img class="logo-img" src="https://luguebo.github.io/CivicaTech/CivicaTechLogo.PNG" alt="CivicaTech">
+    <div class="brand-wrap">
+      <div class="brand-name">🧭 Brújula Electoral</div>
+      <div class="brand-tool">Simula tu impacto</div>
+    </div>
+    <div class="brand-by">CivicaTech · by LuchoGb</div>
+  </div>
+  <div class="intro">
+    <div class="intro-hero">
+      <div class="compass-icon">🎯</div>
+      <div class="intro-eyebrow">Colombia · Segunda vuelta 2026</div>
+      <div class="intro-title">¿Cómo te<br><span>afecta</span> cada<br>programa?</div>
+      <div class="intro-bar"></div>
+      <div class="intro-sub">Responde sobre tu vida real.<br>Te mostramos el impacto concreto<br>de cada candidato en tu situación.</div>
+    </div>
+    <div class="intro-note">🔒 No guardamos ningún dato. Las respuestas son anónimas.</div>
+    <button class="start-btn" onclick="startQ()">Empezar →</button>
+    <button class="other-tool" onclick="location.href='DondeEstasTu.html'">🧭 ¿Dónde estás tú? — Conoce tu perfil político</button>
+  </div>
+</div>
+
+<div class="screen" id="s-q">
+  <div class="q-header">
+    <button class="back-btn" onclick="prevQ()">← Atrás</button>
+    <span class="q-step" id="q-step">Pregunta 1 de 10</span>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-row"><span id="prog-lbl">1 de 10</span><span id="prog-pct">10%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:10%"></div></div>
+  </div>
+  <div class="q-card">
+    <div class="q-bar"></div>
+    <div class="q-num" id="q-num">Pregunta 1</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-note" id="q-note"></div>
+    <div class="options" id="options"></div>
+  </div>
+  <button class="next-btn" id="next-btn" onclick="nextQ()">Siguiente →</button>
+</div>
+
+<div class="screen" id="s-result">
+  <div class="result">
+    <div class="res-eyebrow">Tu resultado personal</div>
+    <div class="res-title">Así te afecta<br>cada programa</div>
+    <div class="res-bar"></div>
+    <div class="res-sub" id="res-sub"></div>
+
+    <div class="compass-result">
+      <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" id="compass-svg">
+        <defs>
+          <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#EAF4FB"/>
+            <stop offset="100%" stop-color="#fff"/>
+          </radialGradient>
+        </defs>
+        <circle cx="110" cy="110" r="100" fill="url(#cg)" stroke="#E8EDF2" stroke-width="1.5"/>
+        <line x1="110" y1="20" x2="110" y2="200" stroke="#E8EDF2" stroke-width="1"/>
+        <line x1="20" y1="110" x2="200" y2="110" stroke="#E8EDF2" stroke-width="1"/>
+        <text x="110" y="16" text-anchor="middle" font-family="Nunito" font-size="10" font-weight="700" fill="#27AE60">CAMBIO</text>
+        <text x="110" y="214" text-anchor="middle" font-family="Nunito" font-size="10" font-weight="700" fill="#888">ORDEN</text>
+        <text x="12" y="113" text-anchor="middle" font-family="Nunito" font-size="10" font-weight="700" fill="#888">INDIVIDUO</text>
+        <text x="208" y="113" text-anchor="middle" font-family="Nunito" font-size="10" font-weight="700" fill="#2B8AC6">COLECTIVO</text>
+        <circle cx="110" cy="110" r="6" fill="#E8EDF2" stroke="#ddd" stroke-width="1"/>
+        <g id="compass-needle" transform="rotate(0,110,110)">
+          <polygon points="110,22 104,110 116,110" fill="#2B8AC6" opacity="0.95"/>
+          <ellipse cx="110" cy="116" rx="7" ry="11" fill="#D0D8E4"/>
+        </g>
+        <circle cx="110" cy="110" r="10" fill="white" stroke="#2B8AC6" stroke-width="2.5"/>
+        <circle cx="110" cy="110" r="4" fill="#2B8AC6"/>
+        <text id="compass-label" x="110" y="175" text-anchor="middle" font-family="Nunito" font-size="11" font-weight="800" fill="#2B8AC6"></text>
+      </svg>
+    </div>
+
+    <div class="cand-block" id="block-e">
+      <div class="cand-head cand-head-e">
+        <span class="cand-emoji">🟡</span>
+        <span class="cand-name">De la Espriella</span>
+        <span class="cand-tag tag-e">Defensores de la Patria</span>
+      </div>
+      <div class="impact-list" id="imp-e"></div>
+    </div>
+
+    <div class="cand-block" id="block-c">
+      <div class="cand-head cand-head-c">
+        <span class="cand-emoji">🔵</span>
+        <span class="cand-name">Cepeda</span>
+        <span class="cand-tag tag-c">Pacto Histórico</span>
+      </div>
+      <div class="impact-list" id="imp-c"></div>
+    </div>
+
+    <div class="reflection">
+      <div class="ref-label">Para reflexionar</div>
+      <div class="ref-text" id="ref-text"></div>
+    </div>
+
+    <button class="share-btn" onclick="shareRes()">Compartir mi resultado</button>
+    <button class="restart-btn" onclick="restart()">Volver a empezar</button>
+    <button class="other-btn" onclick="location.href='DondeEstasTu.html'">🧭 ¿Dónde estás tú? →</button>
+
+    <div class="footer" style="margin-top:20px;"><strong>🧭 Brújula Electoral</strong> · CivicaTech · by LuchoGb</div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const QS=[
+  {k:"lugar",t:"¿Dónde vives?",n:"",o:["Ciudad grande (Bogotá, Medellín, Cali, Barranquilla)","Ciudad intermedia","Municipio pequeño","Zona rural","Ninguna de estas"]},
+  {k:"trabajo",t:"¿En qué trabajas?",n:"",o:["Sector público (Estado, alcaldía, hospital, escuela)","Empresa privada formal","Independiente o cuenta propia","Informal (sin contrato ni prestaciones)","Sin trabajo actualmente","Ninguna de estas"]},
+  {k:"ingresos",t:"¿Cuánto ganas al mes?",n:"No guardamos este dato — es solo para calcular el impacto.",o:["Menos de $500.000","Entre $500.000 y $1.300.000","Entre $1.300.000 y $3.000.000","Entre $3.000.000 y $8.000.000","Más de $8.000.000","Prefiero no decir"]},
+  {k:"vivienda",t:"¿Cómo es tu vivienda?",n:"",o:["Propia, ya pagada","Propia, pagando crédito","Arrendada","Familiar o prestada","Ninguna de estas"]},
+  {k:"servicios",t:"¿Cuánto pagas de servicios públicos al mes?",n:"Agua, luz, gas — todo junto.",o:["Menos de $100.000","Entre $100.000 y $300.000","Entre $300.000 y $600.000","Más de $600.000","No tengo acceso a servicios básicos","Ninguna de estas"]},
+  {k:"salud",t:"¿Cómo accedes a la salud?",n:"",o:["EPS contributiva (cotizante)","Sisben / régimen subsidiado","Medicina prepagada o póliza privada","No tengo acceso regular a salud","Ninguna de estas"]},
+  {k:"educacion",t:"¿Tienes hijos o dependientes en el sistema educativo?",n:"",o:["Colegio público","Colegio privado","Universidad pública","Universidad privada","No tengo dependientes en el sistema","Ninguna de estas"]},
+  {k:"credito",t:"¿Tienes créditos o deudas activas?",n:"",o:["Crédito hipotecario (vivienda)","Crédito de consumo o tarjeta","Crédito informal (prestamista, gota a gota)","Intenté acceder a crédito y me lo negaron","Sin deudas","Ninguna de estas"]},
+  {k:"seguridad",t:"¿Cómo es la seguridad en tu zona?",n:"",o:["Zona tranquila, poca violencia","Zona urbana con inseguridad cotidiana","Zona con presencia de grupos armados","Zona de conflicto activo","Ninguna de estas"]},
+  {k:"estado",t:"¿Dependes del Estado de alguna forma?",n:"",o:["Recibo subsidio (Colombia Mayor, Familias en Acción, otro)","Tengo familiar trabajando en el sector público","Soy campesino o tengo tierra","Ninguna de estas"]}
+];
+
+const IMP={
+  lugar:{
+    "Zona rural":{e:[{i:"⚠️",t:"<strong>Recorte del 40% del gasto estatal</strong> afecta zonas rurales donde el Estado es el único proveedor de servicios básicos."},{i:"🪖",t:"<strong>Ofensiva militar en 90 días</strong> puede aumentar el fuego cruzado en territorios rurales antes de que llegue cualquier solución civil."}],c:[{i:"🌱",t:"<strong>Reforma agraria activa:</strong> tierra, agua y crédito para trabajarla. Como lo viene haciendo Petro, el Estado llega al campo con condiciones reales."},{i:"⚡",t:"<strong>Energía propia:</strong> paneles solares para tu hogar en lugar de subsidios que nunca llegan."}]},
+    "Municipio pequeño":{e:[{i:"⚠️",t:"<strong>El recorte del 40%</strong> golpea más duro en municipios donde el Estado es el único empleador y proveedor de servicios."},{i:"🏛️",t:"<strong>Eliminación de entidades</strong> como el Invías significa que las vías de tu municipio quedan sin gestión."}],c:[{i:"🏥",t:"<strong>Hospitales públicos fortalecidos:</strong> en municipios pequeños el único médico es el del Estado."},{i:"🎓",t:"<strong>Educación pública protegida:</strong> las escuelas no desaparecen con recortes."}]},
+    "Ciudad grande":{e:[{i:"🏢",t:"<strong>Reducción de trámites</strong> puede beneficiar a pequeños empresarios urbanos que hoy no pueden formalizarse."},{i:"⚠️",t:"<strong>Despido masivo de empleados públicos</strong> reduce el consumo en la ciudad y puede generar recesión local."}],c:[{i:"🚌",t:"<strong>Reforma a servicios públicos</strong> para bajar tarifas en estratos bajos."},{i:"👮",t:"<strong>Seguridad humana:</strong> ataca las causas del crimen — desempleo y exclusión."}]},
+    "Ciudad intermedia":{e:[{i:"📉",t:"<strong>Reducción del Estado</strong> puede afectar los empleos formales que sostienen la economía local."},{i:"🏗️",t:"<strong>Promesa de vivienda al 2%</strong> depende del Banrep — no del presidente."}],c:[{i:"🌊",t:"<strong>Agua como derecho:</strong> reforma para que deje de ser un negocio privado."},{i:"💼",t:"<strong>Banco del Pueblo:</strong> crédito accesible para pequeños negocios."}]}
+  },
+  trabajo:{
+    "Sector público (Estado, alcaldía, hospital, escuela)":{e:[{i:"🚨",t:"<strong>Alto riesgo para tu empleo:</strong> el recorte del 40% implica eliminar cientos de miles de cargos públicos. El tuyo puede estar en esa lista."}],c:[{i:"✅",t:"<strong>Tu empleo está protegido:</strong> Cepeda no propone recortes masivos al sector público."}]},
+    "Informal (sin contrato ni prestaciones)":{e:[{i:"⚠️",t:"Sin el Estado que vigile, las condiciones laborales informales pueden empeorar en lugar de mejorar."}],c:[{i:"🏦",t:"<strong>Banco del Pueblo:</strong> crédito accesible para que puedas formalizarte sin caer en el gota a gota."}]},
+    "Sin trabajo actualmente":{e:[{i:"📉",t:"<strong>Despido masivo de empleados públicos</strong> aumenta la competencia en el mercado laboral justo cuando buscas trabajo."}],c:[{i:"🌱",t:"<strong>Economía popular:</strong> empleos desde la base — cooperativas, juntas comunales contratistas."}]},
+    "Independiente o cuenta propia":{e:[{i:"📝",t:"<strong>Reducción de trámites</strong> puede facilitar la formalización de tu negocio."}],c:[{i:"🏦",t:"<strong>Banco del Pueblo:</strong> crédito sin los requisitos imposibles de los bancos tradicionales."}]}
+  },
+  ingresos:{
+    "Menos de $500.000":{e:[{i:"🚨",t:"<strong>El recorte del 40% del gasto</strong> afecta principalmente a quienes dependen de subsidios estatales para vivir."}],c:[{i:"💰",t:"<strong>Renta Ciudadana ampliada</strong> y Colombia Mayor con más cobertura para ingresos en el nivel más bajo."}]},
+    "Entre $500.000 y $1.300.000":{e:[{i:"⚠️",t:"Con este nivel de ingreso, cualquier recorte al Estado afecta directamente tu acceso a servicios que no puedes pagar de forma privada."}],c:[{i:"💊",t:"<strong>Salud pública fortalecida</strong> y educación pública protegida para tus hijos."}]},
+    "Entre $1.300.000 y $3.000.000":{e:[{i:"📊",t:"Un choque recesionario por despidos masivos puede afectar tu trabajo y poder adquisitivo."}],c:[{i:"🏦",t:"<strong>Banco del Pueblo:</strong> crédito a tasas justas para este rango que hoy queda excluido de la banca tradicional."}]},
+    "Entre $3.000.000 y $8.000.000":{e:[{i:"📝",t:"<strong>Reducción de impuestos</strong> puede beneficiarte en este rango."}],c:[{i:"📋",t:"<strong>Reforma tributaria progresiva:</strong> en este rango el impacto es moderado — los cambios fuertes van a rentas más altas."}]},
+    "Más de $8.000.000":{e:[{i:"📉",t:"<strong>Reducción de impuestos</strong> te beneficia directamente en el corto plazo."}],c:[{i:"📊",t:"<strong>Reforma tributaria</strong> sí puede afectar este rango — más impuestos a rentas altas para financiar lo social."}]}
+  },
+  salud:{
+    "Sisben / régimen subsidiado":{e:[{i:"🚨",t:"<strong>El recorte del 40% del gasto</strong> incluye el presupuesto que financia tu régimen subsidiado."}],c:[{i:"💊",t:"<strong>Régimen subsidiado fortalecido:</strong> más cobertura, más medicamentos, atención donde hoy no hay acceso."}]},
+    "No tengo acceso regular a salud":{e:[{i:"🚨",t:"<strong>Sin Estado fuerte en salud</strong>, quien no tiene acceso hoy sigue sin acceso mañana."}],c:[{i:"🏥",t:"<strong>Salud como derecho universal:</strong> nadie queda sin atención por falta de dinero o distancia geográfica."}]},
+    "EPS contributiva (cotizante)":{e:[{i:"📊",t:"<strong>El sistema contributivo</strong> no cambia radicalmente — el modelo de EPS privadas se mantiene."}],c:[{i:"💊",t:"<strong>Reforma a las EPS:</strong> eliminar intermediarios que se quedan con el dinero sin prestar el servicio."}]}
+  },
+  credito:{
+    "Crédito informal (prestamista, gota a gota)":{e:[{i:"⚠️",t:"<strong>Sin banco popular alternativo</strong>, las tasas de mercado siguen siendo inaccesibles para ti."}],c:[{i:"🏦",t:"<strong>Banco del Pueblo:</strong> crédito accesible a tasas justas — diseñado exactamente para sacarte del gota a gota."}]},
+    "Intenté acceder a crédito y me lo negaron":{e:[{i:"💳",t:"<strong>Promete créditos al 2%</strong> pero el Banco de la República no lo manda nadie. Esa promesa no está en sus manos."}],c:[{i:"🏦",t:"<strong>Banco del Pueblo:</strong> sin los requisitos imposibles de la banca tradicional."}]},
+    "Crédito hipotecario (vivienda)":{e:[{i:"💰",t:"<strong>Si el Banrep bajara las tasas</strong> tu cuota bajaría — pero el presidente no puede ordenarle eso al Banrep."}],c:[{i:"💳",t:"<strong>Propone mecanismos de alivio</strong> para deudores de vivienda sin depender del Banrep."}]}
+  },
+  seguridad:{
+    "Zona de conflicto activo":{e:[{i:"🪖",t:"<strong>Ofensiva militar en 90 días</strong> en tu zona significa más fuego cruzado y más desplazamiento para tu familia."}],c:[{i:"🕊️",t:"<strong>Paz total con negociación:</strong> en zonas de conflicto activo, la negociación es la única salida real."}]},
+    "Zona con presencia de grupos armados":{e:[{i:"⚠️",t:"<strong>La ofensiva militar</strong> puede escalar el conflicto en lugar de reducirlo en tu zona."}],c:[{i:"🌱",t:"<strong>Economía alternativa:</strong> trabajo y oportunidad para que los jóvenes de tu zona no sean reclutados."}]},
+    "Zona urbana con inseguridad cotidiana":{e:[{i:"🏗️",t:"<strong>Más cárceles</strong> pueden reducir algo la reincidencia, pero sin atacar las causas el crimen se renueva."}],c:[{i:"👮",t:"<strong>Seguridad humana:</strong> ataca las causas del crimen urbano — desempleo y exclusión."}]}
+  },
+  estado:{
+    "Recibo subsidio (Colombia Mayor, Familias en Acción, otro)":{e:[{i:"🚨",t:"<strong>El recorte del 40% del gasto</strong> afecta directamente los programas de subsidios. Tu transferencia mensual está en riesgo real."}],c:[{i:"💰",t:"<strong>Subsidios protegidos y ampliados:</strong> Colombia Mayor de 3 a 5 millones de beneficiarios."}]},
+    "Tengo familiar trabajando en el sector público":{e:[{i:"🚨",t:"<strong>Alto riesgo para el empleo de tu familiar:</strong> 700.000 cargos públicos en la mira del recorte."}],c:[{i:"✅",t:"<strong>El empleo de tu familiar está protegido:</strong> no hay recortes masivos al sector público."}]},
+    "Soy campesino o tengo tierra":{e:[{i:"⚠️",t:"<strong>Sin el Estado que financia acceso a tierra y agua</strong>, el pequeño campesino queda por fuera de la agroindustria privada."}],c:[{i:"🌾",t:"<strong>Reforma agraria activa:</strong> formalización de tierras, acceso a agua, crédito y mercados para trabajarla."}]}
+  }
+};
+
+// Puntaje para la brújula: [colectivo(-1 a +1), cambio(-1 a +1)]
+const SCORE={
+  lugar:{
+    "Zona rural":[0.3,0.4],"Municipio pequeño":[0.2,0.3],
+    "Ciudad grande":[0,0],"Ciudad intermedia":[0.1,0.1]
+  },
+  trabajo:{
+    "Sector público (Estado, alcaldía, hospital, escuela)":[0.5,0.3],
+    "Informal (sin contrato ni prestaciones)":[0.3,0.4],
+    "Sin trabajo actualmente":[0.2,0.3],
+    "Empresa privada formal":[-0.1,-0.1],
+    "Independiente o cuenta propia":[-0.2,0]
+  },
+  ingresos:{
+    "Menos de $500.000":[0.5,0.5],
+    "Entre $500.000 y $1.300.000":[0.4,0.4],
+    "Entre $1.300.000 y $3.000.000":[0.1,0.1],
+    "Entre $3.000.000 y $8.000.000":[-0.1,-0.1],
+    "Más de $8.000.000":[-0.3,-0.3]
+  },
+  salud:{
+    "Sisben / régimen subsidiado":[0.5,0.4],
+    "No tengo acceso regular a salud":[0.4,0.5],
+    "EPS contributiva (cotizante)":[0.1,0.1],
+    "Medicina prepagada o póliza privada":[-0.2,-0.1]
+  },
+  credito:{
+    "Crédito informal (prestamista, gota a gota)":[0.4,0.5],
+    "Intenté acceder a crédito y me lo negaron":[0.3,0.4],
+    "Crédito hipotecario (vivienda)":[-0.1,0],
+    "Sin deudas":[0,0]
+  },
+  seguridad:{
+    "Zona de conflicto activo":[0.3,0.5],
+    "Zona con presencia de grupos armados":[0.2,0.4],
+    "Zona urbana con inseguridad cotidiana":[0,0.1],
+    "Zona tranquila, poca violencia":[-0.1,-0.1]
+  },
+  estado:{
+    "Recibo subsidio (Colombia Mayor, Familias en Acción, otro)":[0.5,0.4],
+    "Tengo familiar trabajando en el sector público":[0.4,0.3],
+    "Soy campesino o tengo tierra":[0.3,0.4]
+  }
+};
+
+let cur=0,ans={},sel=null;
+
+function ss(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo(0,0);}
+function startQ(){cur=0;ans={};sel=null;ss("s-q");renderQ();}
+function restart(){startQ();}
+
+function renderQ(){
+  const q=QS[cur],tot=QS.length,pct=Math.round(((cur+1)/tot)*100);
+  document.getElementById("q-step").textContent="Pregunta "+(cur+1)+" de "+tot;
+  document.getElementById("prog-lbl").textContent=(cur+1)+" de "+tot;
+  document.getElementById("prog-pct").textContent=pct+"%";
+  document.getElementById("prog-fill").style.width=pct+"%";
+  document.getElementById("q-num").textContent="Pregunta "+(cur+1);
+  document.getElementById("q-text").textContent=q.t;
+  const ne=document.getElementById("q-note");
+  ne.textContent=q.n;ne.style.display=q.n?"block":"none";
+  const opts=document.getElementById("options");opts.innerHTML="";
+  q.o.forEach(o=>{
+    const b=document.createElement("button");b.className="opt";b.textContent=o;
+    if(ans[q.k]===o)b.classList.add("sel");
+    b.onclick=()=>pick(b,o,q.k);opts.appendChild(b);
+  });
+  sel=ans[q.k]||null;
+  const nb=document.getElementById("next-btn");
+  nb.className=sel?"next-btn show":"next-btn";
+  nb.textContent=cur===QS.length-1?"Ver mi resultado →":"Siguiente →";
+}
+
+function pick(btn,val,key){
+  document.querySelectorAll(".opt").forEach(b=>b.classList.remove("sel"));
+  btn.classList.add("sel");sel=val;ans[key]=val;
+  const nb=document.getElementById("next-btn");
+  nb.className="next-btn show";
+  nb.textContent=cur===QS.length-1?"Ver mi resultado →":"Siguiente →";
+}
+
+function nextQ(){
+  if(!sel)return;
+  if(cur<QS.length-1){cur++;sel=null;renderQ();}
+  else showResult();
+}
+
+function prevQ(){
+  if(cur>0){cur--;sel=ans[QS[cur].k]||null;renderQ();}
+  else ss("s-intro");
+}
+
+function calcCompass(){
+  let col=0,cam=0,n=0;
+  Object.keys(ans).forEach(k=>{
+    const v=ans[k];
+    if(SCORE[k]&&SCORE[k][v]){col+=SCORE[k][v][0];cam+=SCORE[k][v][1];n++;}
+  });
+  if(n>0){col=col/n;cam=cam/n;}
+  return{col:Math.max(-1,Math.min(1,col)),cam:Math.max(-1,Math.min(1,cam))};
+}
+
+function compassLabel(col,cam){
+  if(cam>0.2&&col>0.2)return"Cambio colectivo";
+  if(cam>0.2&&col<=-0.2)return"Cambio individual";
+  if(cam<=-0.2&&col>0.2)return"Orden colectivo";
+  if(cam<=-0.2&&col<=-0.2)return"Orden individual";
+  if(cam>0.1)return"Inclinado al cambio";
+  if(cam<-0.1)return"Inclinado al orden";
+  if(col>0.1)return"Inclinado a lo colectivo";
+  if(col<-0.1)return"Inclinado al individuo";
+  return"Centro";
+}
+
+function animateNeedle(angle){
+  const needle=document.getElementById("compass-needle");
+  let cur=0,target=angle,step=(target-cur)/30,i=0;
+  const t=setInterval(()=>{
+    cur+=step;i++;
+    needle.setAttribute("transform","rotate("+cur+",110,110)");
+    if(i>=30){needle.setAttribute("transform","rotate("+target+",110,110)");clearInterval(t);}
+  },16);
+}
+
+function showResult(){
+  const eImpacts=[],cImpacts=[];
+  Object.keys(ans).forEach(k=>{
+    const v=ans[k];
+    if(IMP[k]&&IMP[k][v]){
+      if(IMP[k][v].e)IMP[k][v].e.forEach(x=>eImpacts.push(x));
+      if(IMP[k][v].c)IMP[k][v].c.forEach(x=>cImpacts.push(x));
+    }
+  });
+  const fe=eImpacts.length>0?eImpacts.slice(0,4):[{i:"⚠️",t:"<strong>Recorte del 40% del gasto estatal:</strong> evalúa qué servicios del Estado usas hoy."}];
+  const fc=cImpacts.length>0?cImpacts.slice(0,4):[{i:"🌱",t:"<strong>Más Estado presente:</strong> el programa de Cepeda fortalece los servicios públicos."}];
+  document.getElementById("imp-e").innerHTML=fe.map(x=>"<div class=\"impact-item\"><span class=\"imp-icon\">"+x.i+"</span><span class=\"imp-text\">"+x.t+"</span></div>").join("");
+  document.getElementById("imp-c").innerHTML=fc.map(x=>"<div class=\"impact-item\"><span class=\"imp-icon\">"+x.i+"</span><span class=\"imp-text\">"+x.t+"</span></div>").join("");
+
+  const lugar=ans.lugar||"tu zona";
+  const trab=ans.trabajo||"";
+  document.getElementById("res-sub").textContent="Basado en tu situación: "+(lugar)+(trab?" · "+trab.split("(")[0].trim():"")+"."  ;
+
+  // Reflexión
+  const esRural=ans.lugar==="Zona rural"||ans.lugar==="Municipio pequeño";
+  const depE=ans.trabajo==="Sector público (Estado, alcaldía, hospital, escuela)"||ans.estado==="Recibo subsidio (Colombia Mayor, Familias en Acción, otro)";
+  const conflicto=ans.seguridad==="Zona de conflicto activo"||ans.seguridad==="Zona con presencia de grupos armados";
+  let ref="El 21 de junio no se vota por un candidato — se vota por el país en que vas a vivir los próximos cuatro años. Ya conoces los programas reales. La decisión es tuya.";
+  if(conflicto)ref="Vives donde la decisión del 21 de junio se siente más duro. Una ofensiva militar en 90 días afecta tu vida cotidiana antes que cualquier reforma positiva llegue.";
+  else if(depE)ref="Tu situación depende directamente del Estado. Un recorte del 40% no es un número abstracto para ti — es una cifra que puede cambiar tu ingreso mensual desde el primer año.";
+  else if(esRural)ref="El campo colombiano ha sido el gran olvidado de 200 años de política. La diferencia entre los dos programas es concreta: uno llega con tierra, agua y oportunidad. El otro llega con recortes al único Estado que existe en tu territorio.";
+  document.getElementById("ref-text").textContent=ref;
+
+  // Brújula
+  const{col,cam}=calcCompass();
+  const angle=Math.atan2(col,cam)*(180/Math.PI);
+  document.getElementById("compass-label").textContent=compassLabel(col,cam);
+  ss("s-result");
+  setTimeout(()=>animateNeedle(angle),300);
+}
+
+function shareRes(){
+  const{col,cam}=calcCompass();
+  const lbl=compassLabel(col,cam);
+  const txt="Simulé el impacto de cada candidato en mi vida con Brújula Electoral (CivicaTech). Mi perfil: "+lbl+". ¿Y el tuyo? 👉 https://luguebo.github.io/CivicaTech/SimulaImpacto.html";
+  if(navigator.share)navigator.share({title:"Brújula Electoral",text:txt});
+  else navigator.clipboard.writeText(txt).then(()=>alert("¡Copiado para compartir!"));
+}
+
+// Contador
+
+</script>
+</body>
+</html>
