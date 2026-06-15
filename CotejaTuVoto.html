@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coteja tu voto — Colombia 2026</title>
+<!-- Open Graph / previsualización en WhatsApp, Facebook, etc. -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://luguebo.github.io/CivicaTech/CotejaTuVoto.html">
+<meta property="og:title" content="Coteja tu voto — Colombia 2026">
+<meta property="og:description" content="Los programas oficiales de la segunda vuelta, en 4 niveles. Sin tiempo, sin presión, solo para pensar. ¿Hasta dónde llegas?">
+<meta property="og:image" content="https://luguebo.github.io/CivicaTech/portada-coteja-tu-voto.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_CO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://luguebo.github.io/CivicaTech/portada-coteja-tu-voto.jpg">
+<meta name="description" content="Los programas oficiales de la segunda vuelta, en 4 niveles. Sin tiempo, sin presión, solo para pensar. ¿Hasta dónde llegas?">
+<!-- End Open Graph -->
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -300,7 +313,7 @@ const Q=[
 {m:0,
  t:'¿Cuál candidato propone que los campesinos tengan tierra, agua y mercado — todo junto, no solo el título de propiedad?',
  o:['De la Espriella','Cepeda'],a:1,
- i:'Como lo viene haciendo Petro, Cepeda propone que una reforma agraria sin agua, crédito y acceso a mercados es solo papel. Sin esas tres condiciones, la tierra sola no basta para salir de la pobreza.'},
+ i:'Cepeda propone que una reforma agraria sin agua, crédito y acceso a mercados es solo papel. Sin esas tres condiciones, la tierra sola no basta para salir de la pobreza.'},
 
 {m:0,
  t:'¿Cuál candidato quiere recuperar el territorio por la fuerza en 90 días?',
@@ -310,7 +323,7 @@ const Q=[
 {m:0,
  t:'¿Cuál candidato propone que las comunidades productoras de energía sean también sus dueñas?',
  o:['Cepeda','De la Espriella'],a:0,
- i:'Como lo viene haciendo Petro con la transición energética, Cepeda propone revertir la lógica: en La Guajira se genera energía para medio país. Unos son millonarios con esa energía. Otros pagan cuentas impagables o simplemente no tienen luz. Eso no es normal.'},
+ i:'Cepeda propone revertir la lógica de la transición energética: en La Guajira se genera energía para medio país. Unos son millonarios con esa energía. Otros pagan cuentas impagables o simplemente no tienen luz. Eso no es normal.'},
 
 {m:0,
  t:'¿Cuál candidato propone un Plan Colombia II con cooperación militar de Estados Unidos e Israel?',
@@ -336,12 +349,12 @@ const Q=[
 {m:1,
  t:'¿Cuál candidato propone convertir los subsidios de energía en paneles solares para hogares de estratos 1, 2 y 3?',
  o:['Cepeda','De la Espriella'],a:0,
- i:'Como lo viene haciendo Petro con la transición energética, Cepeda propone que la plata del subsidio se invierta una sola vez en infraestructura propia. En lugar de pagarle mensualmente para siempre a una empresa privada que se enriquece con ese subsidio.'},
+ i:'En la transición energética, Cepeda propone que la plata del subsidio se invierta una sola vez en infraestructura propia. En lugar de pagarle mensualmente para siempre a una empresa privada que se enriquece con ese subsidio.'},
 
 {m:1,
  t:'¿Cuál candidato propone que juntas comunales y asociaciones campesinas puedan contratar directamente con el Estado, sin intermediarios?',
  o:['De la Espriella','Cepeda'],a:1,
- i:'Como lo viene haciendo Petro, Cepeda propone que la plata del Estado llegue a las comunidades sin pasar por contratistas de Bogotá que se quedan con la mayor parte. Hoy la ley lo impide con trámites imposibles para una organización campesina.'},
+ i:'Cepeda propone que la plata del Estado llegue a las comunidades sin pasar por contratistas de Bogotá que se quedan con la mayor parte. Hoy la ley lo impide con trámites imposibles para una organización campesina.'},
 
 {m:1,
  t:'¿Cuál candidato dice abiertamente que sus referentes son Javier Milei en Argentina y Nayib Bukele en El Salvador?',
@@ -356,7 +369,7 @@ const Q=[
 {m:1,
  t:'¿Cuál candidato propone que el acceso al agua y la energía sean derechos garantizados por ley, no mercancías?',
  o:['De la Espriella','Cepeda'],a:1,
- i:'Como lo viene haciendo Petro, Cepeda propone reformar la Ley 142 de Servicios Públicos. Hoy esa ley trata el agua y la energía como negocios privados. Hay familias colombianas que pagan más de luz que de comida.'},
+ i:'Cepeda propone reformar la Ley 142 de Servicios Públicos. Hoy esa ley trata el agua y la energía como negocios privados. Hay familias colombianas que pagan más de luz que de comida.'},
 
 {m:1,
  t:'¿Cuál candidato propone gobernar firmando 90 decretos desde el primer día, sin esperar mayorías en el Congreso?',
@@ -366,7 +379,7 @@ const Q=[
 {m:1,
  t:'¿Cuál candidato propone consolidar que la exportación de alimentos siga superando a la renta petrolera?',
  o:['De la Espriella','Cepeda'],a:1,
- i:'Como lo viene haciendo Petro, bajo su gobierno las exportaciones de alimentos superaron por primera vez en décadas a la renta petrolera. Cepeda propone profundizar ese camino en lugar de volver al modelo extractivista de siempre.'},
+ i:'En años recientes, las exportaciones de alimentos superaron por primera vez en décadas a la renta petrolera. Cepeda propone profundizar ese camino en lugar de volver al modelo extractivista de siempre.'},
 
 // ── UFF (15) ──
 {m:2,
@@ -427,17 +440,17 @@ const Q=[
 {m:2,
  t:'Un candidato propone paz negociada y más presencia del Estado en territorios con escuelas, agua y salud. ¿Cuál es?',
  o:['Cepeda','De la Espriella'],a:0,
- i:'Como lo viene haciendo Petro, Cepeda propone que la paz no se construye solo con acuerdos firmados. Se construye con Estado presente en la vida cotidiana: el maestro que llega, el médico que atiende, el agua que fluye.'},
+ i:'Cepeda propone que la paz no se construye solo con acuerdos firmados. Se construye con Estado presente en la vida cotidiana: el maestro que llega, el médico que atiende, el agua que fluye.'},
 
 {m:2,
  t:'Un candidato reconoce públicamente casos de corrupción dentro de su propio movimiento como punto de partida para combatirla. ¿Cuál es?',
  o:['De la Espriella','Cepeda'],a:1,
- i:'En su programa, Cepeda menciona el caso Olmedo López — corrupción dentro del gobierno Petro — como ejemplo de lo que no puede repetirse. Reconocer los propios errores es más creíble que prometer que nunca van a ocurrir.'},
+ i:'En su programa, Cepeda menciona el caso Olmedo López — corrupción dentro del gobierno actual — como ejemplo de lo que no puede repetirse. Reconocer los propios errores es más creíble que prometer que nunca van a ocurrir.'},
 
 {m:2,
  t:'Un candidato propone continuar la transición energética que ya posicionó a Colombia como referente mundial en el tema. ¿Cuál es?',
  o:['De la Espriella','Cepeda'],a:1,
- i:'Como lo viene haciendo Petro — que llevó a Colombia a liderar foros internacionales sobre clima — Cepeda propone profundizar ese camino. El otro candidato propone más exploración petrolera y fumigación aérea como política central.'},
+ i:'Cepeda propone profundizar el camino que ya llevó a Colombia a liderar foros internacionales sobre clima. El otro candidato propone más exploración petrolera y fumigación aérea como política central.'},
 
 {m:2,
  t:'Un candidato promete más seguridad recortando la justicia, que es el único sistema que puede condenar y encarcelar a los criminales. ¿Cuál es?',
@@ -665,5 +678,6 @@ function shareFinal(){
 </script>
 
 
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "9a0bccea8deb4beba73084c1c4bf375b"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
