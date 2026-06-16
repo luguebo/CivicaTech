@@ -6,15 +6,15 @@
 <title>¿Dónde estás tú? — Brújula Electoral 2026</title>
 <!-- Open Graph / previsualización en WhatsApp, Facebook, etc. -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://luguebo.github.io/CivicaTech/DondeEstasTu.html">
+<meta property="og:url" content="https://civicatech.co/DondeEstasTu.html">
 <meta property="og:title" content="¿Dónde estás tú? — Brújula Electoral 2026">
 <meta property="og:description" content="10 preguntas sobre tu vida real para ubicar tu brújula política. Anónimo y sin decirte por quién votar.">
-<meta property="og:image" content="https://luguebo.github.io/CivicaTech/portada-donde-estas-tu.jpg">
+<meta property="og:image" content="https://civicatech.co/portada-donde-estas-tu.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="es_CO">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://luguebo.github.io/CivicaTech/portada-donde-estas-tu.jpg">
+<meta name="twitter:image" content="https://civicatech.co/portada-donde-estas-tu.jpg">
 <meta name="description" content="10 preguntas sobre tu vida real para ubicar tu brújula política. Anónimo y sin decirte por quién votar.">
 <!-- End Open Graph -->
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -126,7 +126,7 @@ body{font-family:"Nunito",sans-serif;background:#fff;color:#1A1A1A;-webkit-tap-h
 <!-- INTRO -->
 <div class="screen active" id="s-intro">
   <div class="top-bar">
-    <img class="logo-img" src="https://luguebo.github.io/CivicaTech/CivicaTechLogo.PNG" alt="CivicaTech">
+    <img class="logo-img" src="https://civicatech.co/CivicaTechLogo.PNG" alt="CivicaTech">
     <div>
       <div class="brand-name">🧭 Brújula Electoral</div>
       <div class="brand-tool">¿Dónde estás tú?</div>
@@ -537,7 +537,7 @@ function shareRes(){
   const{col,cam}=calcScores();
   const q=getQuad(col,cam);
   const af=calcAfinidad(col,cam);
-  const txt="Mi brújula política apunta a \""+QUAD_NAMES[q]+"\" (Brújula Electoral · CivicaTech). Afinidad: Cepeda "+af.c+"% · De la Espriella "+af.e+"%. ¿Y la tuya? 👉 https://luguebo.github.io/CivicaTech/DondeEstasTu.html";
+  const txt="Mi brújula política apunta a \""+QUAD_NAMES[q]+"\" (Brújula Electoral · CivicaTech). Afinidad: Cepeda "+af.c+"% · De la Espriella "+af.e+"%. ¿Y la tuya? 👉 https://civicatech.co/DondeEstasTu.html";
   if(navigator.share)navigator.share({title:"Brújula Electoral",text:txt});
   else navigator.clipboard.writeText(txt).then(()=>alert("¡Copiado para compartir!"));
 }

@@ -6,15 +6,15 @@
 <title>Simula tu impacto — Brújula Electoral 2026</title>
 <!-- Open Graph / previsualización en WhatsApp, Facebook, etc. -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://luguebo.github.io/CivicaTech/SimulaImpacto.html">
+<meta property="og:url" content="https://civicatech.co/SimulaImpacto.html">
 <meta property="og:title" content="Simula tu impacto — Brújula Electoral 2026">
 <meta property="og:description" content="Cómo te afecta a ti, en concreto, el programa de cada candidato en la segunda vuelta. Respuestas anónimas.">
-<meta property="og:image" content="https://luguebo.github.io/CivicaTech/portada-simula-tu-impacto.jpg">
+<meta property="og:image" content="https://civicatech.co/portada-simula-tu-impacto.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="es_CO">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://luguebo.github.io/CivicaTech/portada-simula-tu-impacto.jpg">
+<meta name="twitter:image" content="https://civicatech.co/portada-simula-tu-impacto.jpg">
 <meta name="description" content="Cómo te afecta a ti, en concreto, el programa de cada candidato en la segunda vuelta. Respuestas anónimas.">
 <!-- End Open Graph -->
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -116,7 +116,7 @@ body{font-family:"Nunito",sans-serif;background:#fff;color:#1A1A1A;}
 
 <div class="screen active" id="s-intro">
   <div class="top-bar">
-    <img class="logo-img" src="https://luguebo.github.io/CivicaTech/CivicaTechLogo.PNG" alt="CivicaTech">
+    <img class="logo-img" src="https://civicatech.co/CivicaTechLogo.PNG" alt="CivicaTech">
     <div class="brand-wrap">
       <div class="brand-name">🧭 Brújula Electoral</div>
       <div class="brand-tool">Simula tu impacto</div>
@@ -441,7 +441,7 @@ function showResult(){
 function shareRes(){
   const{col,cam}=calcCompass();
   const lbl=compassLabel(col,cam);
-  const txt="Simulé el impacto de cada candidato en mi vida con Brújula Electoral (CivicaTech). Mi perfil: "+lbl+". ¿Y el tuyo? 👉 https://luguebo.github.io/CivicaTech/SimulaImpacto.html";
+  const txt="Simulé el impacto de cada candidato en mi vida con Brújula Electoral (CivicaTech). Mi perfil: "+lbl+". ¿Y el tuyo? 👉 https://civicatech.co/SimulaImpacto.html";
   if(navigator.share)navigator.share({title:"Brújula Electoral",text:txt});
   else navigator.clipboard.writeText(txt).then(()=>alert("¡Copiado para compartir!"));
 }
